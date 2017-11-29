@@ -1,5 +1,6 @@
 package edu.orangecoastcollege.cs273.caffeinefinder;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -17,7 +19,9 @@ public class CaffeineDetailsActivity extends AppCompatActivity implements OnMapR
 
     private GoogleMap mMap;
     private CaffeineLocation mSelectedCaffeineLocation;
-    //TODO: Add member variable for Location mMyLocation;
+    //DONE: Add member variable for Location mMyLocation;
+    private Location mMyLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,8 @@ public class CaffeineDetailsActivity extends AppCompatActivity implements OnMapR
         phoneTextView.setText(mSelectedCaffeineLocation.getPhone());
         positionTextView.setText(mSelectedCaffeineLocation.getFormattedLatLng());
 
-        //TODO: Get the parcelable MyLocation from the intent and assign it to the member variable mMyLocation
+        //DONE: Get the parcelable MyLocation from the intent and assign it to the member variable mMyLocation
+        mMyLocation = getIntent().getExtras().getParcelable("MyLocation");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.caffeineDetailsMapFragment);
@@ -48,11 +53,16 @@ public class CaffeineDetailsActivity extends AppCompatActivity implements OnMapR
         LatLng coordinate = new LatLng(mSelectedCaffeineLocation.getLatitude(), mSelectedCaffeineLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(coordinate).title(mSelectedCaffeineLocation.getName()));
 
-        //TODO: Add another LatLng coordinate named myCoordinate based off mMyLocation.
-        //TODO: Add a custom marker at myCoordinate
-        //TODO: Move the camera position to target myCoordinate
+        //DONE: Add another LatLng coordinate named myCoordinate based off mMyLocation.
+        //DONE: Add a custom marker at myCoordinate
+        //DONE: Move the camera position to target myCoordinate
+        LatLng myCoordinate = new LatLng(mMyLocation.getLatitude(), mMyLocation.getLongitude());
+        mMap.addMarker(new MarkerOptions()
+                .position(myCoordinate)
+                .title("Current Location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_marker)));
 
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(coordinate).zoom(18.0f).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(myCoordinate).zoom(18.0f).build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         mMap.moveCamera(cameraUpdate);
     }

@@ -25,11 +25,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    //TODO: Add a compile command for 'com.google.android.gms:play-services-location:11.0.4'
-    //TODO: to access location services for the device
+    //COMPLETED: Add a compile command for 'com.google.android.gms:play-services-location:11.0.4'
+    //COMPLETED: to access location services for the device
 
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.google.android.gms:play-services-maps:11.0.4'
+    compile 'com.google.android.gms:play-services-location:11.0.4'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
