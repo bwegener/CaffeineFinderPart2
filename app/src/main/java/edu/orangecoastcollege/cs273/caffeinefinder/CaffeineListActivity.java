@@ -94,12 +94,18 @@ public class CaffeineListActivity extends AppCompatActivity
 
     //DONE: Override the onStop method to disconnect from the GoogleApiClient
 
+    /**
+     * This connects the GoogleAPIClient whenever the user starts the app.
+     */
     @Override
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
     }
 
+    /**
+     * This disconnects the GoogleAPIClient whenever the user stops the app.
+     */
     @Override
     protected void onStop() {
         super.onStop();
@@ -114,6 +120,12 @@ public class CaffeineListActivity extends AppCompatActivity
 
     //DONE: Define a new method: private void handleNewLocation(CaffeineLocation newLocation) that will
     //DONE: update the user's location (custom marker) on the Google Map and rebuild all markers for the Caffeine Locations (standard markers)
+
+    /**
+     * This handles whenever there is a new location from the user.
+     * It clears the previous position from the map and gets the new latitude and longitude from the user.
+     * @param newLocation
+     */
     private void handleNewLocation(Location newLocation) {
         mLastLocation = newLocation;
         mMap.clear(); // clear so that there are not tons of markers
@@ -136,6 +148,12 @@ public class CaffeineListActivity extends AppCompatActivity
     }
 
 
+    /**
+     * This gets the location details whenever the user clicks the button.
+     * The selected location is brought up in the details intent and the position of the user
+     * is sent as well as the selected position.
+     * @param view
+     */
     public void viewLocationDetails(View view) {
         if (view instanceof LinearLayout) {
             LinearLayout selectedLayout = (LinearLayout) view;
@@ -152,6 +170,10 @@ public class CaffeineListActivity extends AppCompatActivity
 
     //DONE: In overriden onConnected method, get the last location, then request location updates and handle the new location
 
+    /**
+     * This checks to make sure that the app has permissions to find the user's location.
+     * @param bundle
+     */
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
@@ -181,6 +203,12 @@ public class CaffeineListActivity extends AppCompatActivity
     //DONE: Else, initialize mLastLocation to a new location with latitude 0.0 and longitude 0.0
     //DONE: In either case, handle the new location.
 
+    /**
+     * This makes sure that the app can access the user's location.
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -203,11 +231,19 @@ public class CaffeineListActivity extends AppCompatActivity
 
     }
 
+    /**
+     * If the connection fails this sends an error to the log screen.
+     * @param connectionResult
+     */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e("Caffeine Finder", "Connection to Location Services failed: " + connectionResult.getErrorMessage());
     }
 
+    /**
+     * This calls the handleNewLocation function whenever a location is changed.
+     * @param location
+     */
     @Override
     public void onLocationChanged(Location location) {
         handleNewLocation(location);
@@ -217,6 +253,11 @@ public class CaffeineListActivity extends AppCompatActivity
     //DONE: Loop through all the caffeine locations and find the one with the minimum distance.
     //DONE: Then, fire off an Intent to the details page and put both the SelectedLocation and MyLocation
 
+    /**
+     * This finds the closest source of caffeine to the user by cycling through all the
+     * sources of caffeine and seeing which distance is the closest.
+     * @param v
+     */
     public void findClosestCaffeine(View v)
     {
         double minDistance = Double.MAX_VALUE;
